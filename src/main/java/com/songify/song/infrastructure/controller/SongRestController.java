@@ -21,20 +21,20 @@ import java.util.Map;
 public class SongRestController {
 
     private final SongAdder songAdder;
-    private final SongRetriever songRetreiver;
+    private final SongRetriever songRetriever;
 
 
-    public SongRestController(SongAdder songAdder, SongRetriever songRetreiver) {
+    public SongRestController(SongAdder songAdder, SongRetriever songRetriever) {
         this.songAdder = songAdder;
-        this.songRetreiver = songRetreiver;
+        this.songRetriever = songRetriever;
     }
 
     @GetMapping
     public ResponseEntity<GetAllSongsResponseDto> getAllSongs(@RequestParam(required = false) Integer limit) {
-        Map<Integer, Song> allSong = songRetreiver.findAll();
+        Map<Integer, Song> allSong = songRetriever.findAll();
 
         if (limit != null) {
-            Map<Integer, Song> limitedMap = songRetreiver.findAllLimitedBy(limit);
+            Map<Integer, Song> limitedMap = songRetriever.findAllLimitedBy(limit);
             GetAllSongsResponseDto response = new GetAllSongsResponseDto(limitedMap);
             return ResponseEntity.ok(response);
         }
@@ -44,7 +44,7 @@ public class SongRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GetSongResponseDto> getSongById(@PathVariable Integer id, @RequestHeader(required = false) String requestId) {
-        Map<Integer, Song> allSong = songRetreiver.findAll();
+        Map<Integer, Song> allSong = songRetriever.findAll();
         log.info(requestId);
         if (!allSong.containsKey(id)) {
             throw new SongNotFoundException("Song with id " + id + " not found");
@@ -66,7 +66,7 @@ public class SongRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DeleteSongResponseDto> deleteSongByIdUsingPathVariable(@PathVariable Integer id) {
-        Map<Integer, Song> allSong = songRetreiver.findAll();
+        Map<Integer, Song> allSong = songRetriever.findAll();
 
         if (!allSong.containsKey(id)) {
             throw new SongNotFoundException("Song with id " + id + " not found");
@@ -79,7 +79,7 @@ public class SongRestController {
     @PutMapping("/{id}")
     public ResponseEntity<UpdateSongResponseDto> update(@PathVariable Integer id,
                                                         @RequestBody @Valid UpdateSongRequestDto request) {
-        Map<Integer, Song> allSong = songRetreiver.findAll();
+        Map<Integer, Song> allSong = songRetriever.findAll();
 
         if (!allSong.containsKey(id)) {
             throw new SongNotFoundException("Song with id " + id + " not found");
@@ -96,7 +96,7 @@ public class SongRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<PartiallyUpdateSongResponseDto> partiallyUpdateSong(@PathVariable Integer id,
                                                                               @RequestBody PartiallyUpdateSongRequestDto request) {
-        Map<Integer, Song> allSong = songRetreiver.findAll();
+        Map<Integer, Song> allSong = songRetriever.findAll();
 
         if (!allSong.containsKey(id)) {
             throw new SongNotFoundException("Song with id " + id + " not found");
